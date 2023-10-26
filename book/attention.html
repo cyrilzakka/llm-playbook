@@ -1,0 +1,289 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Attention - The Large Language Model Playbook</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="SUMMARY.html">Table of Contents</a></li><li class="chapter-item expanded "><a href="pos-embed.html"><strong aria-hidden="true">1.</strong> Positional Embeddings</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nested/fixed-pos-embed.html"><strong aria-hidden="true">1.1.</strong> Fixed Positional Embeddings</a></li><li class="chapter-item expanded "><a href="nested/learned-pos-embed.html"><strong aria-hidden="true">1.2.</strong> Learned Positional Embeddings</a></li><li class="chapter-item expanded "><a href="nested/rot-pos-embed.html"><strong aria-hidden="true">1.3.</strong> Rotary Positional Embeddings</a></li></ol></li><li class="chapter-item expanded "><a href="attention.html" class="active"><strong aria-hidden="true">2.</strong> Attention</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nested/mha.html"><strong aria-hidden="true">2.1.</strong> Multi-Headed Attention (MHA)</a></li><li class="chapter-item expanded "><a href="nested/mqa.html"><strong aria-hidden="true">2.2.</strong> Multi-Query Attention (MQA)</a></li><li class="chapter-item expanded "><a href="nested/gqa.html"><strong aria-hidden="true">2.3.</strong> Grouped-Query Attention (GQA)</a></li><li class="chapter-item expanded "><a href="nested/swa.html"><strong aria-hidden="true">2.4.</strong> Sliding-Window Attention (SWA)</a></li><li class="chapter-item expanded "><a href="nested/attention-sink.html"><strong aria-hidden="true">2.5.</strong> Attention Sink</a></li><li class="chapter-item expanded "><a href="nested/kv-cache.html"><strong aria-hidden="true">2.6.</strong> KV Cache</a></li><li class="chapter-item expanded "><a href="nested/rolling-buffer.html"><strong aria-hidden="true">2.7.</strong> Rolling Buffer Cache</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Sampling</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Speculative Sampling</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Finetuning</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Low Rank Adaptation (LoRA) of LLMs</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Efficient Finetuning of Quantized LLMs (QLoRA)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.3.</strong> Reinforcement Learning from Human Feedback (RLHF)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.4.</strong> Reinforcement Learning from AI Feedback (RLAIF)</div></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Large Language Model Playbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="attention"><a class="header" href="#attention">Attention</a></h1>
+<p>Imagine you're reading a dense academic paper, thrilling novel or LLM playbook. Your brain doesn't weigh each word or sentence equally. Some portions are scrutinized carefully, while others may be skimmed over. You naturally pay 'attention' to specific parts based on their relevance to your current focus or understanding. This selective focus allows you to better comprehend the text and keeps you from being overwhelmed by unnecessary details.</p>
+<p>In the realm of machine learning, particularly in sequence-to-sequence tasks like machine translation or text summarization, a similar mechanism is invaluable. Early models like <a href="https://explained.ai/rnn/">RNNs</a> and <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">LSTMs</a> process sequences step-by-step, but they can struggle with long sequences and often lose track of important earlier tokens when focused on the more recent ones. The attention mechanism was introduced to combat these limitations. It essentially allows the model to &quot;focus&quot; on different parts of the input sequence when producing an output, much like how you would focus on certain parts of a text while reading.</p>
+<h3 id="the-attention-mechanism-explained"><a class="header" href="#the-attention-mechanism-explained">The Attention Mechanism Explained</a></h3>
+<p>Within this framework, three major components come into play: Query (<strong>Q</strong>), Key (<strong>K</strong>), and Value (<strong>V</strong>).</p>
+<ul>
+<li><strong>Query (Q)</strong>: Picture this as the search term you'd type into a search engine—like asking your brain, &quot;Hey, what should I focus on right now?&quot; It's a vector representing your current area of focus.</li>
+<li><strong>Key (K)</strong>: The Key vectors are akin to the titles of Wikipedia articles. They serve as guideposts, each corresponding to a specific token in the input sequence, hinting where you might find relevant information.</li>
+<li><strong>Value (V)</strong>: These vectors are the meat of the matter—the article content, if you will. They offer the detailed information each token carries.</li>
+</ul>
+<p>How do they all come together?</p>
+<pre><code class="language-python">class Attention(nn.Module):
+    def __init__(self, word_size:int=512, embed_dim:int=64) -&gt; None:
+        super().__init__()
+        self.embed_dim = embed_dim
+        self.dim_K = torch.tensor(embed_dim)
+        self.query = nn.Linear(in_features=word_size, out_features=embed_dim, bias=True)
+        self.key  = nn.Linear(in_features=word_size, out_features=embed_dim, bias=True)
+        self.value = nn.Linear(in_features=word_size, out_features=embed_dim, bias=True)
+
+    def self_attention(self, Q:Tensor, K:Tensor, V:Tensor) -&gt; Tensor:
+        K_T = torch.transpose(K, 0, 1)
+        score = torch.matmul(Q, K_T)  / torch.sqrt(self.dim_K)
+        score = torch.softmax(score, dim=-1)
+        Z = torch.matmul(score, V)
+        return Z
+
+    def forward(self, x:Tensor) -&gt; Tensor:
+        Q = self.query(x)
+        K = self.key(x)
+        V = self.value(x)
+        Z = self.self_attention(Q, K, V)
+        return Z
+</code></pre>
+<ol>
+<li><strong>Score Generation:</strong> Every Query is matched against all Keys via a <em>dot product</em> to calculate a score. It's like asking, &quot;How relevant is this part of the text to my current focus?&quot;</li>
+<li><strong>Softmax Scaling:</strong> These scores undergo Softmax normalization, turning these scores into probabilities that sum up to 1. Picture this as divvying up your concentration across various parts.</li>
+<li><strong>Weighted Sum</strong>: Finally, these attention weights are applied to the Values (you guessed it, another dot product), summing them up to form a single output vector. You can think of this as gathering all the most valuable sentences to form a cohesive summary of what you need to focus on.</li>
+</ol>
+<h3 id="self-attention"><a class="header" href="#self-attention">Self-Attention</a></h3>
+<p>Self-attention is a specific type of attention mechanism where the Query (Q), Key (K), and Value (V) all come from the same place, usually the output of the previous layer in your network. In layman's terms, self-attention enables tokens in the input sequence to look at other tokens in the same sequence to gather contextual clues.</p>
+<p>Self-attention becomes particularly interesting when employed in autoregressive models like GPT (Generative Pre-trained Transformer). In such models, the generation of each new token is dependent only on the preceding tokens. Causal self-attention restricts the scope of attention in a way that each token only looks at those that precede it, and not the ones that follow. This is crucial for maintaining the sequence structure and generating sensible outputs. Imagine it like reading a book where you only consider the chapters or sentences you've already read to make a prediction about what comes next. You don't peek ahead; you stick with what you know so far.</p>
+<h3 id="limitations-and-challenges"><a class="header" href="#limitations-and-challenges">Limitations and Challenges</a></h3>
+<p>While attention mechanisms have revolutionized sequence-to-sequence tasks, they're not without their challenges:</p>
+<ul>
+<li><strong>Computational Cost:</strong> Attention mechanisms can be computationally expensive, especially for very long sequences. As such there exists a rich body of literature extending and refining it in various ways. We'll explore a few of those approaches in the subsequent sections.</li>
+<li><strong>Interpretability:</strong> While attention weights can give some insight into what the model is &quot;focusing&quot; on, this doesn't necessarily mean the model &quot;understands&quot; the text in the way humans do.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="nested/rot-pos-embed.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="nested/mha.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="nested/rot-pos-embed.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="nested/mha.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

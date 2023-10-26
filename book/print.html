@@ -1,0 +1,539 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Large Language Model Playbook</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="SUMMARY.html">Table of Contents</a></li><li class="chapter-item expanded "><a href="pos-embed.html"><strong aria-hidden="true">1.</strong> Positional Embeddings</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nested/fixed-pos-embed.html"><strong aria-hidden="true">1.1.</strong> Fixed Positional Embeddings</a></li><li class="chapter-item expanded "><a href="nested/learned-pos-embed.html"><strong aria-hidden="true">1.2.</strong> Learned Positional Embeddings</a></li><li class="chapter-item expanded "><a href="nested/rot-pos-embed.html"><strong aria-hidden="true">1.3.</strong> Rotary Positional Embeddings</a></li></ol></li><li class="chapter-item expanded "><a href="attention.html"><strong aria-hidden="true">2.</strong> Attention</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nested/mha.html"><strong aria-hidden="true">2.1.</strong> Multi-Headed Attention (MHA)</a></li><li class="chapter-item expanded "><a href="nested/mqa.html"><strong aria-hidden="true">2.2.</strong> Multi-Query Attention (MQA)</a></li><li class="chapter-item expanded "><a href="nested/gqa.html"><strong aria-hidden="true">2.3.</strong> Grouped-Query Attention (GQA)</a></li><li class="chapter-item expanded "><a href="nested/swa.html"><strong aria-hidden="true">2.4.</strong> Sliding-Window Attention (SWA)</a></li><li class="chapter-item expanded "><a href="nested/attention-sink.html"><strong aria-hidden="true">2.5.</strong> Attention Sink</a></li><li class="chapter-item expanded "><a href="nested/kv-cache.html"><strong aria-hidden="true">2.6.</strong> KV Cache</a></li><li class="chapter-item expanded "><a href="nested/rolling-buffer.html"><strong aria-hidden="true">2.7.</strong> Rolling Buffer Cache</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Sampling</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Speculative Sampling</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Finetuning</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Low Rank Adaptation (LoRA) of LLMs</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Efficient Finetuning of Quantized LLMs (QLoRA)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.3.</strong> Reinforcement Learning from Human Feedback (RLHF)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.4.</strong> Reinforcement Learning from AI Feedback (RLAIF)</div></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Large Language Model Playbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<h3 id="what-is-the-llm-playbook"><a class="header" href="#what-is-the-llm-playbook">What is the LLM Playbook?</a></h3>
+<p>Given the explosive growth and diverse range of methodologies in the field of large language models (LLMs), there's an inherent need for structured and clear communication. That's where this playbook comes in. Unlike more technical blogs or exhaustive resources that delve deep into mathematical rigor, this playbook serves a unique purpose. It is primarily a platform where I can systematize and articulate my understanding of the rapid advancements of LLM training, optimization, and deployment. In collating my observations and insights, I aim to bring clarity to an area that is complex and ever-changing.</p>
+<p>While this playbook is invaluable for my own cognitive structuring, it is also intended to be a resource for others. Whether you are a newcomer looking for a guided introduction or a seasoned practitioner seeking up-to-date insights, this document aims to provide a curated view of the key developments shaping the future of large language models. Given my background as a medical doctor, you won't find an abundance of math-heavy equations or theoretical proofs here. Instead, the approach is designed to be intuitive, aiming to make the subject matter accessible to a broader audience. That said, I do assume that you have a basic understanding of Python and deep learning, as (relatively unoptimized) code snippets and examples will frequently be used to illustrate points.</p>
+<p>Thank you for joining this educational journey, and I hope you find the playbook as enlightening as I find the process of maintaining it.</p>
+<h3 id="about-me"><a class="header" href="#about-me">About Me</a></h3>
+<p>My name is <a href="https://profiles.stanford.edu/cyril-zakka">Cyril Zakka</a>, I'm a medical doctor and postdoctoral fellow in the <a href="https://www.hiesingerlab.com/">Hiesinger Lab</a> in the Department of Cardiothoracic Surgery at Stanford University. My research interests primarily involve building and deploying large multimodal networks for medical imaging and autonomous robotic surgery.</p>
+<p>If you have any feedback, comments, or questions please don't hesitate to reach out:</p>
+<ul>
+<li><a href="https://twitter.com/cyrilzakka">Twitter</a></li>
+<li><a href="https://github.com/cyrilzakka">Github</a></li>
+<li><a href="https://www.linkedin.com/in/cyrilzakka/">LinkedIn</a></li>
+<li><a href="%5Bhttps://cyrilzakka.github.io">Personal Website</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="summary"><a class="header" href="#summary">Summary</a></h1>
+<p><a href="./README.html">Introduction</a></p>
+<p><a href="./SUMMARY.html">Table of Contents</a></p>
+<ul>
+<li><a href="pos-embed.html">Positional Embeddings</a>
+<ul>
+<li><a href="nested/fixed-pos-embed.html">Fixed Positional Embeddings</a></li>
+<li><a href="nested/learned-pos-embed.html">Learned Positional Embeddings</a></li>
+<li><a href="nested/rot-pos-embed.html">Rotary Positional Embeddings</a></li>
+</ul>
+</li>
+<li><a href="attention.html">Attention</a>
+<ul>
+<li><a href="nested/mha.html">Multi-Headed Attention (MHA)</a></li>
+<li><a href="nested/mqa.html">Multi-Query Attention (MQA)</a></li>
+<li><a href="nested/gqa.html">Grouped-Query Attention (GQA)</a></li>
+<li><a href="nested/swa.html">Sliding-Window Attention (SWA)</a></li>
+<li><a href="nested/attention-sink.html">Attention Sink</a></li>
+<li><a href="nested/kv-cache.html">KV Cache</a></li>
+<li><a href="nested/rolling-buffer.html">Rolling Buffer Cache</a></li>
+</ul>
+</li>
+<li><a href="">Sampling</a>
+<ul>
+<li><a href="">Speculative Sampling</a>()</li>
+</ul>
+</li>
+<li><a href="">Finetuning</a>
+<ul>
+<li><a href="">Low Rank Adaptation (LoRA) of LLMs</a></li>
+<li><a href="">Efficient Finetuning of Quantized LLMs (QLoRA)</a></li>
+<li><a href="">Reinforcement Learning from Human Feedback (RLHF)</a></li>
+<li><a href="">Reinforcement Learning from AI Feedback (RLAIF)</a></li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="positional-embeddings"><a class="header" href="#positional-embeddings">Positional Embeddings</a></h1>
+<p>The transformer architecture has revolutionized the field of natural language processing, but it comes with a peculiar limitation: it lacks an intrinsic mechanism to account for the position or sequence order of elements in an input. In plain terms, a transformer model would produce the same output for two different permutations of the same input sequence. This is problematic because the sequence in which words or tokens appear carries significant meaning in language and other types of data.</p>
+<p>This limitation arises because the architecture relies on <a href="/attention.html">self-attention mechanisms</a>, which, by their very design, are permutation-invariant—they treat all positions equally and thus are indifferent to the arrangement of elements in the sequence. Consequently, while transformers excel at recognizing patterns and relationships between elements, they are blind to the &quot;where&quot; and &quot;when&quot; of those elements within the sequence.</p>
+<p>To address this shortcoming and make transformers aware of element positions, we use a specialized form of embeddings known as positional embeddings. These embeddings work alongside the standard word embeddings to grant transformers the capability to understand sequence order. By doing so, they complete the picture, allowing the model to interpret data in a way that respects both content and sequence.</p>
+<p>As with all aspects of machine learning, the choice of position encoding typically involves tradeoffs between simplicity, flexibility, and efficiency. Here we explore a few of the most popular methods:</p>
+<h3 id="absolute-positional-encoding"><a class="header" href="#absolute-positional-encoding">Absolute Positional Encoding</a></h3>
+<p>Absolute position encodings are computed in the input layer and are summed with the input token embeddings. <a href="https://arxiv.org/abs/1706.03762">Vaswani et al. (2017)</a> proposed this for Transformers and it has been a popular choice in the followup works (<a href="https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf">Radford et al., 2018</a>; <a href="https://arxiv.org/abs/1810.04805">Devlin et al., 2018</a>). There are two common variations of the absolute position encodings - fixed and learned.</p>
+<ul>
+<li><a href="nested/fixed-pos-embed.html">Fixed Positional Embeddings</a></li>
+<li><a href="nested/learned-pos-embed.html">Learned Positional Embeddings</a></li>
+</ul>
+<h3 id="relative-positional-encoding"><a class="header" href="#relative-positional-encoding">Relative Positional Encoding</a></h3>
+<p>One drawback of absolute position encoding is that it requires fixed length of input sequence and does not directly capture relative positions to each word. To solve these problems several relative positions schemes have been proposed.</p>
+<ul>
+<li><a href="nested/rot-pos-embed.html">Rotary Positional Embedding</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="fixed-positional-embeddings"><a class="header" href="#fixed-positional-embeddings">Fixed Positional Embeddings</a></h1>
+<p>As previously mentioned, in the Transformer architecture positional encodings serve as a critical component for giving the model an understanding of the order of tokens in a sequence. Unlike recurrent networks, which inherently understand sequence order, the multi-head attention mechanism in the Transformer is non-recurrent and processes the entire sequence in parallel. Consequently, it lacks an innate sense of order among the data points.</p>
+<p>To remedy this, the concept of positional encoding is employed. Specifically, a tensor that matches the shape of the input sequence is added to the input, and this tensor is designed such that the difference in values between any two positions reflects their distance in the sequence. This allows the model to understand the relative positions of tokens and treat them accordingly.</p>
+<p>To this end, several methods for positional encoding have been proposed. Before we dive into more advanced methods for positional encoding, let's first debunk the shortcomings of seemingly intuitive solutions. Up first, one might think about normalizing time-step values between [0, 1] and using them for positional information:</p>
+<pre><code class="language-python">time_step_normalized = np.linspace(0, 1, num_tokens)
+</code></pre>
+<p>Though tempting, this approach is inherently flawed: the normalized values are dependent on sequence length, making it problematic for the model to handle sequences of varying lengths - a positional encoding value of 0.4 means something entirely different to a sequence of length 4 than to a sequence of length 80.</p>
+<p>Similarly, one might advocate for a linear numbering scheme such as:</p>
+<pre><code class="language-python">time_step_linear = np.arange(1, num_tokens + 1)
+</code></pre>
+<p>Simple? Yes. Effective? Not quite. As sequence length inflates, positional values escalate, undermining the model's ability to generalize to sequences longer than those in the training set, while potentially leading to training instabilities (e.g. exploding gradients).</p>
+<h3 id="sinusoidal-positional-encoding"><a class="header" href="#sinusoidal-positional-encoding">Sinusoidal Positional Encoding</a></h3>
+<p>Among the various approaches proposed over time, the most widely used form of fixed positional embeddings is sinusoidal positional encoding. In this method, each position in the sequence is uniquely represented by a combination of sine and cosine functions at different frequencies. These sinusoidal embeddings are added to the input embeddings to supplement them with positional context.</p>
+<pre><code class="language-python">def sinusoidal_positional_encoding(position, d_model):
+    angle_rads = np.arange(d_model) // 2 * np.pi / np.power(10000, 2 * (np.arange(d_model) // 2) / np.float32(d_model)) # 1
+    angle_rads = position * angle_rads # 2
+    pos_encoding = np.zeros(d_model) # 3
+    pos_encoding[0::2] = np.sin(angle_rads[0::2]) # 4
+    pos_encoding[1::2] = np.cos(angle_rads[1::2]) # 4
+    return pos_encoding
+</code></pre>
+<p>Here, the function takes two arguments: <code>position</code> representing the position of a token in the sequence, and <code>d_model</code> being the dimension of the model's input embeddings.</p>
+<ol>
+<li><strong>Initialize Angle Array:</strong> We start by creating an array that will hold angle values for sine and cosine functions. These angles are calculated in such a way that they depend on both the position of a token in the sequence and its position in the embedding space. The calculations involve some scaling to ensure that the model handles different sequence lengths efficiently.</li>
+<li><strong>Position-Based Scaling:</strong> The next step is to multiply these pre-calculated angle values by the position of the token in the sequence. This ensures that each token position will have a unique set of angles.</li>
+<li><strong>Initialize Encoding Array:</strong> An array of zeros is then initialized. This array will hold the final positional encodings and has the same size as the embedding dimension of the model.</li>
+<li><strong>Populate Sine and Cosine Values:</strong> Finally, we populate this zero array with sine and cosine values based on the angle values we've computed. The sine values go into the even-indexed positions, and the cosine values go into the odd-indexed positions.
+The end result is that each position in the sequence gets a unique pattern of sine and cosine values, making it distinguishable from other positions.</li>
+</ol>
+<p>How exactly does this approach convey positional information? <a href="https://www.blopig.com/blog/2023/10/understanding-positional-encoding-in-transformers/">Imagine a series of pendulums aligned in a straight line</a>. Each pendulum is swinging at a different frequency, starting from the leftmost one, which swings the slowest, to the rightmost one, which swings the fastest. Now, imagine taking a snapshot of the pendulums at a certain time <code>t</code> where<code>t</code> corresponds to the token's position in the sequence.</p>
+<p>In this snapshot, pendulums on the left have moved very little due to their slower frequencies, while those on the right have moved considerably. If you were to calculate the dot product (read: similarity) of their positions at this moment, the slow-swinging pendulums would be aligned closely and contribute positively to the dot product. In contrast, the fast-swinging pendulums would be out of phase and contribute noise around zero to the dot product.</p>
+<p>As time (or position) progresses, the snapshot would capture more pendulums being out of phase, causing the dot product value to gradually converge to zero. This mirrors the behavior of the sinusoidal positional encoding: the dot product between the positional encodings of tokens that are close in sequence will be high, while the value will smoothly decrease for tokens that are further apart.</p>
+<p>By mapping each token's position in the sequence to a unique combination of sinusoidal values, we effectively capture the relative positions and relationships between tokens. The encoded values at different positions can then be visualized, showing a high value for nearby tokens and a smoothly decreasing value as the distance between tokens increases.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="learned-positional-embeddings"><a class="header" href="#learned-positional-embeddings">Learned Positional Embeddings</a></h1>
+<p>In contrast to fixed positional embeddings like <a href="nested/./fixed-pos-embed.html">sinusoidal encoding</a>, another popular approach is learned positional embeddings. Here, instead of hard-coding the logic for computing positional encodings, we make the model learn the best possible representation for sequence position during the training phase. Like other parameters in the model, these learned positional embeddings get fine-tuned through backpropagation.</p>
+<p>The learned positional embeddings offer the model flexibility and adaptability. They can be designed to have the same shape as the input sequence, thus making them directly addable to the token embeddings. In it simplest form, learned positional embeddings can be defined as:</p>
+<pre><code class="language-python">pos_emb_shape = (1, seq_len, d_model) # 1
+pos_embedding = np.random.randn(*pos_emb_shape) # 2
+x += pos_embedding # 3
+</code></pre>
+<ol>
+<li><strong>Initialize Embedding Shape:</strong> The first line of code sets up the shape for the positional embedding array. The shape <code>(1, seq_len, d_model)</code> indicates that we'll have:
+<code>1</code> to denote it's a single tensor that will be broadcasted across multiple batches,
+<code>seq_len</code> as the length of the sequence to which the positional embedding will be added, and
+<code>d_model</code> as the dimensions of the model, which should match the dimension of the input sequence embeddings. This ensures that we can add the positional embedding directly to the token embeddings.</li>
+<li><strong>Random Initialization:</strong> In the second line, we initialize the positional embedding array with random values from a normal distribution. This serves as a starting point for what the model will later refine during training. These embeddings are considered parameters and are fine-tuned during the backpropagation process.</li>
+<li><strong>Add to Input Sequence:</strong> Finally, we add the positional embedding array to the input sequence x. This is done element-wise and serves to encode the position information within each token's embedding. This combined representation is then passed through the model for further processing.</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rotary-positional-embeddings"><a class="header" href="#rotary-positional-embeddings">Rotary Positional Embeddings</a></h1>
+<p>Rotary Positional Embeddings aim to overcome limitations tied to both <a href="nested/./fixed-pos-embed.html">fixed</a> and <a href="nested/./learned-pos-embed.html">learned</a> positional embeddings. While fixed sinusoidal embeddings are generalizable to arbitrary sequence lengths in practice, models have been found to underperform when encountering sequences with lengths substantially different from their training data in practice. Enter rotary positional embeddings.</p>
+<p>Rotary Positional Embeddings provide a flexible mechanism to include positional context into tokens, without modifying the original embeddings. The core principle revolves around rotating the queries and keys in the attention mechanism, where each position in the sequence receives a unique rotation. This way, the dot product between queries and keys gradually diminishes for tokens that are distant from one another in the sequence, providing an effective way to encode relative positions.</p>
+<p>This approach tends to maintain more of the original token information while still providing the model with an effective way to understand sequence positions. Their implementation would look something like: </p>
+<pre><code class="language-python">def rotary_positional_embedding(position, d_model):
+    freqs = np.exp(np.linspace(0., -1., d_model // 2) * np.log(10000.)) # 1
+    angles = position * freqs # 2
+    rotary_matrix = np.stack([np.sin(angles), np.cos(angles)], axis=-1) # 3
+    return rotary_matrix.reshape(-1, d_model) # 4
+</code></pre>
+<ol>
+<li><strong>Initialize Frequency Array:</strong> Similar to the sinusoidal approach, we initiate an array of frequencies. The key difference here is the use of exponential scaling to generate frequencies, which will serve as rotation factors.</li>
+<li><strong>Position-Based Scaling:</strong> Next, we scale the positions by these frequencies. Unlike in sinusoidal encodings where the scaled positions would be added to the embeddings, here they are used for rotating the embeddings.</li>
+<li><strong>Construct Rotary Matrix:</strong> Using the scaled angles, a rotary matrix is created by stacking the sine and cosine of the angles. This matrix will serve to rotate the original embeddings.</li>
+<li><strong>Reshape Rotary Matrix:</strong> Finally, the rotary matrix is reshaped to match the model's embedding dimension, ensuring it's appropriately utilized to rotate the token embeddings. This rotation matrix is then embedded into the original vector by matrix multiplication instead of addition.</li>
+</ol>
+<p>Simple enough! Let's conceptualize rotary positional embeddings by imagining a clock with multiple hands. Each hand rotates at a different speed, representing different frequencies. Every token in your sequence corresponds to a specific clock hand.</p>
+<ul>
+<li><strong>Variable Rotation Speed:</strong> Just like in a real clock where the second, minute, and hour hands rotate at distinct speeds, different dimensions in the query/key embeddings are rotated differently. This can be thought of as each dimension having its own &quot;frequency,&quot; determining how fast it rotates based on its position in the sequence.</li>
+<li><strong>Dot Product Significance:</strong> When two clock hands point in the same or similar direction (i.e., their angles are close), they can be considered &quot;similar&quot; or &quot;close&quot; in sequence context. In the same vein, the dot product between rotated queries and keys would be higher for positions that are close in the sequence, and lower for positions that are farther apart.
+As time progresses (or as you traverse through the sequence), each clock hand rotates based on its speed (frequency). When you look at the clock at any given &quot;time&quot; (or position in the sequence), the angles of the clock hands with respect to a fixed starting point provide a snapshot of the tokens' positions.</li>
+<li><strong>Invariance to Sequence Length:</strong> Much like how the hands of a clock keep rotating indefinitely regardless of the 12-hour clock face, Rotary Positional Embeddings aren't restricted by the length of the sequence. This means they can adapt to sequences of varying lengths, offering a level of flexibility.</li>
+<li><strong>Impact on Attention:</strong> Just as you could determine the elapsed time between different events by observing the relative angles between clock hands, rotary positional embeddings influence the attention mechanism. They help it focus on tokens that are contextually relevant to each other based on their positional relationships in the sequence.
+By simply looking at how much each hand has rotated, you can figure out its relative position in the sequence. In this way, the rotational information captures the essence of each token's position within the overall sequence while leaving the actual token embeddings largely untouched.</li>
+</ul>
+<p>In rotary positional embeddings, the same principle applies: each token's embedding gets &quot;rotated&quot; based on its position in the sequence. This rotational change encodes the positional information while retaining the original embedding, thus allowing the model to understand the tokens' relative positions effectively.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="attention"><a class="header" href="#attention">Attention</a></h1>
+<p>Imagine you're reading a dense academic paper, thrilling novel or LLM playbook. Your brain doesn't weigh each word or sentence equally. Some portions are scrutinized carefully, while others may be skimmed over. You naturally pay 'attention' to specific parts based on their relevance to your current focus or understanding. This selective focus allows you to better comprehend the text and keeps you from being overwhelmed by unnecessary details.</p>
+<p>In the realm of machine learning, particularly in sequence-to-sequence tasks like machine translation or text summarization, a similar mechanism is invaluable. Early models like <a href="https://explained.ai/rnn/">RNNs</a> and <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">LSTMs</a> process sequences step-by-step, but they can struggle with long sequences and often lose track of important earlier tokens when focused on the more recent ones. The attention mechanism was introduced to combat these limitations. It essentially allows the model to &quot;focus&quot; on different parts of the input sequence when producing an output, much like how you would focus on certain parts of a text while reading.</p>
+<h3 id="the-attention-mechanism-explained"><a class="header" href="#the-attention-mechanism-explained">The Attention Mechanism Explained</a></h3>
+<p>Within this framework, three major components come into play: Query (<strong>Q</strong>), Key (<strong>K</strong>), and Value (<strong>V</strong>).</p>
+<ul>
+<li><strong>Query (Q)</strong>: Picture this as the search term you'd type into a search engine—like asking your brain, &quot;Hey, what should I focus on right now?&quot; It's a vector representing your current area of focus.</li>
+<li><strong>Key (K)</strong>: The Key vectors are akin to the titles of Wikipedia articles. They serve as guideposts, each corresponding to a specific token in the input sequence, hinting where you might find relevant information.</li>
+<li><strong>Value (V)</strong>: These vectors are the meat of the matter—the article content, if you will. They offer the detailed information each token carries.</li>
+</ul>
+<p>How do they all come together?</p>
+<pre><code class="language-python">class Attention(nn.Module):
+    def __init__(self, word_size:int=512, embed_dim:int=64) -&gt; None:
+        super().__init__()
+        self.embed_dim = embed_dim
+        self.dim_K = torch.tensor(embed_dim)
+        self.query = nn.Linear(in_features=word_size, out_features=embed_dim, bias=True)
+        self.key  = nn.Linear(in_features=word_size, out_features=embed_dim, bias=True)
+        self.value = nn.Linear(in_features=word_size, out_features=embed_dim, bias=True)
+
+    def self_attention(self, Q:Tensor, K:Tensor, V:Tensor) -&gt; Tensor:
+        K_T = torch.transpose(K, 0, 1)
+        score = torch.matmul(Q, K_T)  / torch.sqrt(self.dim_K)
+        score = torch.softmax(score, dim=-1)
+        Z = torch.matmul(score, V)
+        return Z
+
+    def forward(self, x:Tensor) -&gt; Tensor:
+        Q = self.query(x)
+        K = self.key(x)
+        V = self.value(x)
+        Z = self.self_attention(Q, K, V)
+        return Z
+</code></pre>
+<ol>
+<li><strong>Score Generation:</strong> Every Query is matched against all Keys via a <em>dot product</em> to calculate a score. It's like asking, &quot;How relevant is this part of the text to my current focus?&quot;</li>
+<li><strong>Softmax Scaling:</strong> These scores undergo Softmax normalization, turning these scores into probabilities that sum up to 1. Picture this as divvying up your concentration across various parts.</li>
+<li><strong>Weighted Sum</strong>: Finally, these attention weights are applied to the Values (you guessed it, another dot product), summing them up to form a single output vector. You can think of this as gathering all the most valuable sentences to form a cohesive summary of what you need to focus on.</li>
+</ol>
+<h3 id="self-attention"><a class="header" href="#self-attention">Self-Attention</a></h3>
+<p>Self-attention is a specific type of attention mechanism where the Query (Q), Key (K), and Value (V) all come from the same place, usually the output of the previous layer in your network. In layman's terms, self-attention enables tokens in the input sequence to look at other tokens in the same sequence to gather contextual clues.</p>
+<p>Self-attention becomes particularly interesting when employed in autoregressive models like GPT (Generative Pre-trained Transformer). In such models, the generation of each new token is dependent only on the preceding tokens. Causal self-attention restricts the scope of attention in a way that each token only looks at those that precede it, and not the ones that follow. This is crucial for maintaining the sequence structure and generating sensible outputs. Imagine it like reading a book where you only consider the chapters or sentences you've already read to make a prediction about what comes next. You don't peek ahead; you stick with what you know so far.</p>
+<h3 id="limitations-and-challenges"><a class="header" href="#limitations-and-challenges">Limitations and Challenges</a></h3>
+<p>While attention mechanisms have revolutionized sequence-to-sequence tasks, they're not without their challenges:</p>
+<ul>
+<li><strong>Computational Cost:</strong> Attention mechanisms can be computationally expensive, especially for very long sequences. As such there exists a rich body of literature extending and refining it in various ways. We'll explore a few of those approaches in the subsequent sections.</li>
+<li><strong>Interpretability:</strong> While attention weights can give some insight into what the model is &quot;focusing&quot; on, this doesn't necessarily mean the model &quot;understands&quot; the text in the way humans do.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="multi-headed-attention-mha"><a class="header" href="#multi-headed-attention-mha">Multi-Headed Attention (MHA)</a></h1>
+<p>In a single attention mechanism, each token gets a chance to focus on other parts of the sequence. However, there's a limit to what it can capture this way. Multi-headed attention solves this by running not one but multiple attention layers in parallel, essentially allowing the model to pay attention to different parts of the input for different reasons.
+This can naively be implemented in the following way:</p>
+<pre><code class="language-python">class MultiheadAttention(nn.Module):
+    r&quot;&quot;&quot;
+    https://arxiv.org/abs/1706.03762
+    &quot;&quot;&quot;
+    def __init__(self, word_size: int = 512, embed_dim: int = 64, n_head:int=8) -&gt; None:
+        super().__init__()
+        self.n_head = n_head
+        self.embed_dim = embed_dim
+        self.dim_K = torch.tensor(embed_dim)
+        self.proj = nn.Parameter(torch.empty(embed_dim * n_head, embed_dim))
+        nn.init.xavier_uniform_(self.proj)
+        self.multihead = nn.ModuleList([
+            Attention(word_size, embed_dim) for _ in range(n_head)
+        ])
+
+    def forward(self, x: Tensor) -&gt; Tensor:
+        Z_s = torch.cat([head(x) for head in self.multihead], dim=1)
+        Z = torch.matmul(Z_s, self.proj)
+        return Z
+</code></pre>
+<p>Why is this useful?</p>
+<ul>
+<li><strong>Diverse Representations:</strong> Having multiple heads allows the model to recognize various types of relationships between tokens, which can be critical for understanding complex structures like sentences.</li>
+<li><strong>Increased Capacity:</strong> Multi-headed attention increases the model's capacity to learn, as each head can potentially learn different aspects of the data. Think of it like having multiple detectives on the case instead of just one.</li>
+<li><strong>Parallelism:</strong> Multiple heads can be processed in parallel, providing a computational advantage. Imagine splitting the detective work, where each detective specializes in a different type of evidence.</li>
+</ul>
+<p>Keep in mind that the number of heads and their dimensions are hyperparameters that you'll have to fine-tune based on your specific application. More heads are not always better; it's about striking the right balance between model complexity and performance.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="multi-query-attention-mqa"><a class="header" href="#multi-query-attention-mqa">Multi-Query Attention (MQA)</a></h1>
+<p>Multi-Query Attention (MQA) is a refined version of the <a href="nested/./mha.html">Multi-Head Attention (MHA)</a> algorithm that improves computational efficiency without sacrificing much in terms of model accuracy. In standard MHA, separate linear transformations are applied to the Query (Q), Key (K), and Value (V) for each attention head. MQA diverges from this by using a single shared set of Keys (K) and Values (V) across all heads, while allowing individual transformations for each Query (Q). Although this approach was first introduced in 2019, it has only been recently popularized by models such as <a href="https://arxiv.org/pdf/2204.02311.pdf">PaLM</a> and <a href="https://arxiv.org/abs/2306.01116">Falcon</a>. This is illustrated below:</p>
+<pre><code class="language-python">class  MultiQueryAttention(Attention):
+    r&quot;&quot;&quot;
+    https://arxiv.org/pdf/1911.02150.pdf
+    &quot;&quot;&quot;
+    def __init__(self, word_size: int = 512, embed_dim: int = 64, n_query:int=8) -&gt; None:
+        super().__init__(word_size, embed_dim)
+        self.n_query = n_query
+        self.proj = nn.Parameter(torch.empty(embed_dim * n_query, embed_dim))
+        nn.init.xavier_normal_(self.proj)
+        delattr(self, 'query')
+        self.querys = nn.ModuleList([
+            nn.Linear(in_features=word_size, out_features=embed_dim, bias=True)
+            for _ in range(n_query)
+        ])
+        self.key = nn.Linear(in_features=word_size, out_features=embed_dim, bias=True)
+        self.value = nn.Linear(in_features=word_size, out_features=embed_dim, bias=True)
+
+    def forward(self, x: Tensor) -&gt; Tensor:
+        K = self.key(x)
+        V = self.value(x)
+        Z_s = torch.cat([
+            self.self_attention(query(x), K, V) for query in self.querys
+        ], dim=1)
+        Z = torch.matmul(Z_s, self.proj)
+        return Z
+
+</code></pre>
+<p>with improvements in: </p>
+<ul>
+<li><strong>Memory Space:</strong> Sharing K and V across all heads dramatically reduces the memory footprint. This is critical for handling long sequences without choking your hardware.</li>
+<li><strong>Memory Bandwidth:</strong> With fewer unique transformations, the computational cost in terms of memory bandwidth also drops.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="grouped-query-attention-gqa"><a class="header" href="#grouped-query-attention-gqa">Grouped-Query Attention (GQA)</a></h1>
+<p>Grouped Query Attention (GQA) extends the concept of Multi-Head Attention (MHA) and Multi-Query Attention (MQA) by providing a flexible trade-off between computational efficiency and model expressiveness. In GQA, query heads are divided into <code>G</code> groups, where each group shares a common key (K) and value (V) projection. This configuration enables three notable variations:</p>
+<ul>
+<li><strong>GQA-1:</strong> A single group, which equates to <a href="nested/./mqa.html">Multi-Query Attention (MQA)</a>.</li>
+<li><strong>GQA-H:</strong> Groups equal to the number of heads, essentially the same as <a href="nested/./mha.html">Multi-Head Attention (MHA)</a>.</li>
+<li><strong>GQA-G:</strong> An intermediate configuration with <code>G</code> groups, balancing between efficiency and expressiveness.</li>
+</ul>
+<p>The use of <code>G</code> groups allows GQA to mitigate the memory overhead associated with storing keys and values for each head, especially in scenarios with large context windows or batch sizes. At the same time, it offers a nuanced control over the model's quality and efficiency.</p>
+<p>In its simplest form, GQA can be implemented as follows:</p>
+<pre><code class="language-python">class  GroupedQueryAttention(Attention):
+    r&quot;&quot;&quot;
+    https://arxiv.org/pdf/2305.13245.pdf
+    &quot;&quot;&quot;
+    def __init__(self, word_size: int = 512, embed_dim: int = 64,
+                 n_grouped: int = 4, n_query_each_group:int=2) -&gt; None:
+        super().__init__(word_size, embed_dim)
+        delattr(self, 'query')
+        delattr(self, 'key')
+        delattr(self, 'value')
+
+        self.grouped = nn.ModuleList([
+            MultiQueryAttention(word_size, embed_dim, n_query=n_query_each_group)
+            for _ in range(n_grouped)
+        ])
+        # self.proj = nn.Parameter(torch.empty((..., ...), requires_grad=True))
+        self.proj = nn.Parameter(torch.empty(embed_dim * n_grouped, embed_dim))
+        nn.init.xavier_uniform_(self.proj)
+
+    def forward(self, x: Tensor) -&gt; Tensor:
+        Z_s = torch.cat([head(x) for head in self.grouped], dim=1)
+        Z = torch.matmul(Z_s, self.proj)
+        return Z
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sliding-window-attention"><a class="header" href="#sliding-window-attention">Sliding-Window Attention</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="attention-sink"><a class="header" href="#attention-sink">Attention Sink</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="kv-cache"><a class="header" href="#kv-cache">KV Cache</a></h1>
+<p>Key-Value (KV) caching is a technique used to accelerate the inference process in machine learning models, particularly in autoregressive models. In these models, generating tokens one by one is a common practice, but it can be computationally expensive because it repeats certain calculations at each step. To address this, KV caching comes into play. It involves caching the previous Keys and Values, so we don’t need to recalculate them for each new token. This significantly reduces the size of matrices used in calculations, making matrix multiplications faster. The only trade-off is that KV caching requires more GPU memory (or CPU memory if a GPU isn’t used) to store these Key and Value states.</p>
+<pre><code class="language-python">class KVCache:
+    def __init__(self, max_batch_size, max_seq_len, n_kv_heads, head_dim, device):
+        self.cache_k = torch.zeros((max_batch_size, max_seq_len, n_kv_heads, head_dim)).to(device)
+        self.cache_v = torch.zeros((max_batch_size, max_seq_len, n_kv_heads, head_dim)).to(device)
+
+    def update(self, batch_size, start_pos, xk, xv):
+        self.cache_k[:batch_size, start_pos :start_pos + xk.size(1)] = xk
+        self.cache_v[:batch_size, start_pos :start_pos + xv.size(1)] = xv
+
+    def get(self, batch_size, start_pos, seq_len):
+        keys = self.cache_k[:batch_size,  :start_pos + seq_len]
+        values = self.cache_v[:batch_size, :start_pos + seq_len]
+        return keys, values
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rolling-buffer-cache"><a class="header" href="#rolling-buffer-cache">Rolling Buffer Cache</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
