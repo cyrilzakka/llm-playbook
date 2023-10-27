@@ -1,1 +1,7 @@
 # Sliding-Window Attention
+The original Transformer's self-attention component has a computational complexity of `O(n^2)` with `n` being the input sequence length. In other words, if the input sequence size doubles, the time taken to compute self-attention quadruples. This inefficiency becomes a roadblock when handling extensive input sequences, making it impractical for large-scale tasks. Sliding Window Attention (SWA) addresses this by employing a fixed-size window around each token, reducing the computational overhead while retaining the ability to consider local context.
+
+### How does it work?
+Sliding Window Attention uses a fixed-size window `w` around each token in the sequence. Specifically, each token attends to `0.5*w` tokens on both sides of itself. This localizes the attention span and reduces the time complexity to `O(n*w)`, a linear function with respect to the sequence length `n`. In autoregressive contexts, each token attends to `w` tokens before it.
+
+Since a single layer of SWA has its limitation can only capture local context within its fixed window, multiple layers are stacked upon each other, effectively increasing the receptive field without incurring an exponential increase in computational cost. The receptive field size is determined by `l*w` where `l` is the number of layers. Optionally, `w` can be varied across layers to find a suitable trade-off between computational efficiency and model expressiveness.

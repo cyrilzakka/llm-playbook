@@ -172,6 +172,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="attention-sink"><a class="header" href="#attention-sink">Attention Sink</a></h1>
+<p><a href="https://arxiv.org/abs/2309.17453">Attention Sinks</a> address a critical issue observed in the use of <a href="./swa.html">window attention</a> in autoregressive language models. When window attention is applied, these models often exhibit a sudden decline in fluency as soon as the first token leaves the context window. The underlying reason for this decline lies in an intriguing aspect of LLMs: an overwhelming majority of attention is allocated to the first few tokens of the sequence, termed as &quot;attention sinks.&quot; These tokens soak up a disproportionate amount of the attention score—even when they are not semantically relevant.</p>
+<h3 id="why-does-this-happen"><a class="header" href="#why-does-this-happen">Why does this happen?</a></h3>
+<p>The model relies heavily on these &quot;sink&quot; tokens because the softmax operation in the attention mechanism enforces a sum-to-one constraint. In the absence of relevant tokens to match with the next generated token, the model compensates by dumping attention scores into these first few tokens. When window attention is employed and the first token exits the window, the model loses its default 'sink' to offload the attention. This leads to the attention scores being dispersed across all remaining tokens. Consequently, tokens that should not necessarily have high attention scores end up getting them, causing the model to &quot;collapse&quot; and lose fluency.</p>
+<h3 id="the-solution"><a class="header" href="#the-solution">The Solution</a></h3>
+<p>To mitigate this issue, the authors propose an adaptation to the traditional window attention. The revised model always keeps the initial four tokens—i.e., the attention sink tokens—within the window. Moreover, instead of using positions from the original text, they use the positions within the <a href="./kv-cache.html">cache</a> to add positional information to the tokens. This ensures that the &quot;sink&quot; tokens remain spatially close to the rest, effectively serving as attention offloading points.</p>
 
                     </main>
 

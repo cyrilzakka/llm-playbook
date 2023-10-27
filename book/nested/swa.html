@@ -172,6 +172,10 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="sliding-window-attention"><a class="header" href="#sliding-window-attention">Sliding-Window Attention</a></h1>
+<p>The original Transformer's self-attention component has a computational complexity of <code>O(n^2)</code> with <code>n</code> being the input sequence length. In other words, if the input sequence size doubles, the time taken to compute self-attention quadruples. This inefficiency becomes a roadblock when handling extensive input sequences, making it impractical for large-scale tasks. Sliding Window Attention (SWA) addresses this by employing a fixed-size window around each token, reducing the computational overhead while retaining the ability to consider local context.</p>
+<h3 id="how-does-it-work"><a class="header" href="#how-does-it-work">How does it work?</a></h3>
+<p>Sliding Window Attention uses a fixed-size window <code>w</code> around each token in the sequence. Specifically, each token attends to <code>0.5*w</code> tokens on both sides of itself. This localizes the attention span and reduces the time complexity to <code>O(n*w)</code>, a linear function with respect to the sequence length <code>n</code>. In autoregressive contexts, each token attends to <code>w</code> tokens before it.</p>
+<p>Since a single layer of SWA has its limitation can only capture local context within its fixed window, multiple layers are stacked upon each other, effectively increasing the receptive field without incurring an exponential increase in computational cost. The receptive field size is determined by <code>l*w</code> where <code>l</code> is the number of layers. Optionally, <code>w</code> can be varied across layers to find a suitable trade-off between computational efficiency and model expressiveness.</p>
 
                     </main>
 
