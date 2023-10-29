@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Multi-Headed Attention (MHA) - The Large Language Model Playbook</title>
+        <title>Top-P - The Large Language Model Playbook</title>
 
 
         <!-- Custom HTML head -->
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="../SUMMARY.html">Table of Contents</a></li><li class="chapter-item expanded "><a href="../pos-embed.html"><strong aria-hidden="true">1.</strong> Positional Embeddings</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nested/fixed-pos-embed.html"><strong aria-hidden="true">1.1.</strong> Fixed Positional Embeddings</a></li><li class="chapter-item expanded "><a href="../nested/learned-pos-embed.html"><strong aria-hidden="true">1.2.</strong> Learned Positional Embeddings</a></li><li class="chapter-item expanded "><a href="../nested/rot-pos-embed.html"><strong aria-hidden="true">1.3.</strong> Rotary Positional Embeddings (RoPE)</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> No Positional Embeddings (NoPE)</div></li></ol></li><li class="chapter-item expanded "><a href="../attention.html"><strong aria-hidden="true">2.</strong> Attention</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nested/mha.html" class="active"><strong aria-hidden="true">2.1.</strong> Multi-Headed Attention (MHA)</a></li><li class="chapter-item expanded "><a href="../nested/mqa.html"><strong aria-hidden="true">2.2.</strong> Multi-Query Attention (MQA)</a></li><li class="chapter-item expanded "><a href="../nested/gqa.html"><strong aria-hidden="true">2.3.</strong> Grouped-Query Attention (GQA)</a></li><li class="chapter-item expanded "><a href="../nested/swa.html"><strong aria-hidden="true">2.4.</strong> Sliding-Window Attention (SWA)</a></li><li class="chapter-item expanded "><a href="../nested/attention-sink.html"><strong aria-hidden="true">2.5.</strong> Attention Sink</a></li><li class="chapter-item expanded "><a href="../nested/kv-cache.html"><strong aria-hidden="true">2.6.</strong> KV Cache</a></li></ol></li><li class="chapter-item expanded "><a href="../sampling.html"><strong aria-hidden="true">3.</strong> Sampling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nested/topk.html"><strong aria-hidden="true">3.1.</strong> Top-K</a></li><li class="chapter-item expanded "><a href="../nested/topp.html"><strong aria-hidden="true">3.2.</strong> Top-P</a></li><li class="chapter-item expanded "><a href="../nested/temp.html"><strong aria-hidden="true">3.3.</strong> Temperature</a></li><li class="chapter-item expanded "><a href="../nested/speculative-sampling.html"><strong aria-hidden="true">3.4.</strong> Speculative Sampling</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Finetuning</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Low Rank Adaptation (LoRA) of LLMs</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Efficient Finetuning of Quantized LLMs (QLoRA)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.3.</strong> Reinforcement Learning from Human Feedback (RLHF)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.4.</strong> Reinforcement Learning from AI Feedback (RLAIF)</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Prompting</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.1.</strong> Chain of Thought (CoT)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.2.</strong> Tree of Thought (ToT)</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Batching</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Continuous Batching</div></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="../SUMMARY.html">Table of Contents</a></li><li class="chapter-item expanded "><a href="../pos-embed.html"><strong aria-hidden="true">1.</strong> Positional Embeddings</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nested/fixed-pos-embed.html"><strong aria-hidden="true">1.1.</strong> Fixed Positional Embeddings</a></li><li class="chapter-item expanded "><a href="../nested/learned-pos-embed.html"><strong aria-hidden="true">1.2.</strong> Learned Positional Embeddings</a></li><li class="chapter-item expanded "><a href="../nested/rot-pos-embed.html"><strong aria-hidden="true">1.3.</strong> Rotary Positional Embeddings (RoPE)</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> No Positional Embeddings (NoPE)</div></li></ol></li><li class="chapter-item expanded "><a href="../attention.html"><strong aria-hidden="true">2.</strong> Attention</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nested/mha.html"><strong aria-hidden="true">2.1.</strong> Multi-Headed Attention (MHA)</a></li><li class="chapter-item expanded "><a href="../nested/mqa.html"><strong aria-hidden="true">2.2.</strong> Multi-Query Attention (MQA)</a></li><li class="chapter-item expanded "><a href="../nested/gqa.html"><strong aria-hidden="true">2.3.</strong> Grouped-Query Attention (GQA)</a></li><li class="chapter-item expanded "><a href="../nested/swa.html"><strong aria-hidden="true">2.4.</strong> Sliding-Window Attention (SWA)</a></li><li class="chapter-item expanded "><a href="../nested/attention-sink.html"><strong aria-hidden="true">2.5.</strong> Attention Sink</a></li><li class="chapter-item expanded "><a href="../nested/kv-cache.html"><strong aria-hidden="true">2.6.</strong> KV Cache</a></li></ol></li><li class="chapter-item expanded "><a href="../sampling.html"><strong aria-hidden="true">3.</strong> Sampling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nested/topk.html"><strong aria-hidden="true">3.1.</strong> Top-K</a></li><li class="chapter-item expanded "><a href="../nested/topp.html" class="active"><strong aria-hidden="true">3.2.</strong> Top-P</a></li><li class="chapter-item expanded "><a href="../nested/temp.html"><strong aria-hidden="true">3.3.</strong> Temperature</a></li><li class="chapter-item expanded "><a href="../nested/speculative-sampling.html"><strong aria-hidden="true">3.4.</strong> Speculative Sampling</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Finetuning</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Low Rank Adaptation (LoRA) of LLMs</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Efficient Finetuning of Quantized LLMs (QLoRA)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.3.</strong> Reinforcement Learning from Human Feedback (RLHF)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.4.</strong> Reinforcement Learning from AI Feedback (RLAIF)</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Prompting</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.1.</strong> Chain of Thought (CoT)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.2.</strong> Tree of Thought (ToT)</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Batching</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Continuous Batching</div></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -171,46 +171,49 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="multi-headed-attention-mha"><a class="header" href="#multi-headed-attention-mha">Multi-Headed Attention (MHA)</a></h1>
-<p>In a single attention mechanism, each token gets a chance to focus on other parts of the sequence. However, there's a limit to what it can capture this way. Multi-headed attention solves this by running not one but multiple attention layers in parallel, essentially allowing the model to pay attention to different parts of the input for different reasons.
-This can naively be implemented in the following way:</p>
-<pre><code class="language-python">class MultiheadAttention(nn.Module):
-    r&quot;&quot;&quot;
-    https://arxiv.org/abs/1706.03762
-    &quot;&quot;&quot;
-    def __init__(self, word_size: int = 512, embed_dim: int = 64, n_head:int=8) -&gt; None:
-        super().__init__()
-        self.n_head = n_head
-        self.embed_dim = embed_dim
-        self.dim_K = torch.tensor(embed_dim)
-        self.proj = nn.Parameter(torch.empty(embed_dim * n_head, embed_dim))
-        nn.init.xavier_uniform_(self.proj)
-        self.multihead = nn.ModuleList([
-            Attention(word_size, embed_dim) for _ in range(n_head)
-        ])
+                        <h1 id="top-p"><a class="header" href="#top-p">Top-P</a></h1>
+<p>While <a href="./topp.html">Top-K sampling</a> restricts the sampling pool to the K most likely next words, Top-P sampling, also known as &quot;nucleus sampling,&quot; adds a twist. Instead of specifying a set number of top candidates (K), you specify a probability mass (P) and sample only from the smallest group of words that have a collective probability greater than P.</p>
+<p>Let's implement Top-P sampling using a NumPy function for better understanding:</p>
+<pre><code class="language-python">import numpy as np
 
-    def forward(self, x: Tensor) -&gt; Tensor:
-        Z_s = torch.cat([head(x) for head in self.multihead], dim=1)
-        Z = torch.matmul(Z_s, self.proj)
-        return Z
+def top_p_sampling(logits, p):
+    sorted_indices = np.argsort(logits)  # Sort logits
+    sorted_probs = np.exp(logits[sorted_indices]) / np.sum(np.exp(logits))  # Convert sorted logits to probabilities
+    cum_probs = np.cumsum(sorted_probs)  # Calculate the cumulative probability
+    valid_indices = np.where(cum_probs &gt;= (1 - p))[0]  # Get valid indices where cumulative probability is above threshold
+    if len(valid_indices) &gt; 0:
+        min_valid_index = valid_indices[0]
+        mask = sorted_indices[min_valid_index:]  # Mask for valid logits
+    else:
+        mask = sorted_indices[-1:]  # If no valid indices, select the last one (highest probability)
+    selected_index = np.random.choice(mask)  # Randomly select an index from the valid set
+    return selected_index
 </code></pre>
-<p>Why is this useful?</p>
+<p>Here's the step-by-step breakdown:</p>
+<ol>
+<li><strong>Sort and Convert:</strong> Sort the logits and convert them to probabilities.</li>
+<li><strong>Cumulative Sum:</strong> Calculate the cumulative sum of the sorted probabilities.</li>
+<li><strong>Thresholding:</strong> Identify the subset of words whose collective probability mass exceeds the given threshold (P).</li>
+<li><strong>Sampling:</strong> Randomly sample the next word from this set of valid candidates.</li>
+</ol>
+<h3 id="when-to-use-top-p-sampling"><a class="header" href="#when-to-use-top-p-sampling">When to Use Top-P Sampling</a></h3>
+<p>Top-P sampling is particularly useful when you want more adaptive and context-sensitive text generation. Unlike Top-K, which has a fixed number of candidates, Top-P allows for a variable number of candidates based on the context, making it more flexible.</p>
+<h3 id="limitations-and-considerations"><a class="header" href="#limitations-and-considerations">Limitations and Considerations</a></h3>
 <ul>
-<li><strong>Diverse Representations:</strong> Having multiple heads allows the model to recognize various types of relationships between tokens, which can be critical for understanding complex structures like sentences.</li>
-<li><strong>Increased Capacity:</strong> Multi-headed attention increases the model's capacity to learn, as each head can potentially learn different aspects of the data. Think of it like having multiple detectives on the case instead of just one.</li>
-<li><strong>Parallelism:</strong> Multiple heads can be processed in parallel, providing a computational advantage. Imagine splitting the detective work, where each detective specializes in a different type of evidence.</li>
+<li>Computational Cost: The sorting operation increases the computational cost slightly compared to Top-K sampling.</li>
+<li>Hyperparameter Sensitivity: The choice of P can significantly influence the generated text. A smaller P will make the text more random, while a larger P will make it more deterministic.
+Top-P sampling provides an adaptive method for balancing the trade-off between diversity and informativeness in generated text. It has gained popularity in several NLP applications, from automated customer service to creative writing aids.</li>
 </ul>
-<p>Keep in mind that the number of heads and their dimensions are hyperparameters that you'll have to fine-tune based on your specific application. More heads are not always better; it's about striking the right balance between model complexity and performance.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../attention.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../nested/topk.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../nested/mqa.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../nested/temp.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -220,11 +223,11 @@ This can naively be implemented in the following way:</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../attention.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../nested/topk.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../nested/mqa.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../nested/temp.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
